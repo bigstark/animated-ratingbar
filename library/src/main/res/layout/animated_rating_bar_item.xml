@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@id/secondary_progress_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <com.bigstark.animatedratingbar.lib.ClipableImageView
+        android:id="@id/progress_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</FrameLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnimatedRatingBar">
+        <attr name="progressImage" format="reference" />
+        <attr name="secondaryProgressImage" format="reference" />
+        <attr name="numStars" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="rating" format="float" />
+        <attr name="stepSize" format="float" />
+        <attr name="gapSize" format="dimension" />
+    </declare-styleable>
+</resources>
