@@ -17,7 +17,7 @@ allprojects {
 ```
 ```
 dependencies {
-    compile 'com.github.bigstark:animated-ratingbar:1.2'
+    compile 'com.github.bigstark:animated-ratingbar:0.1'
 }
 ```
 
