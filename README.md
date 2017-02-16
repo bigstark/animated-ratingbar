@@ -3,7 +3,7 @@
 [![jitpack](https://img.shields.io/badge/jitpack-0.1-green.svg)](https://jitpack.io/#bigstark/android-cycler)
 
 
-[![AnimatedRatingBar Video](https://img.youtube.com/vi/N5JyryFEomM/0.jpg)](https://www.youtube.com/watch?v=N5JyryFEomM)
+[![AnimatedRatingBar Video](http://www.giphy.com/gifs/l0He3Bk3v79rjoShW)](https://www.youtube.com/watch?v=N5JyryFEomM)
 
 ##Include your project
 add build.gradle
