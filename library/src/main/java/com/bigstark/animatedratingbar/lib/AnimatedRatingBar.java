@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -44,8 +45,9 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
     public AnimatedRatingBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOrientation(HORIZONTAL);
-        setAttrs(context, attrs);
+        setGravity(Gravity.CENTER_VERTICAL);
         setWillNotDraw(false);
+        setAttrs(context, attrs);
     }
 
 
@@ -88,6 +90,14 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
 
 
     private void resetItems() {
+        if (getMeasuredHeight() == 0) {
+            setMeasuredDimension(getMeasuredWidth(), starSize);
+        }
+
+        if (getMeasuredWidth() == 0) {
+            setMeasuredDimension(starSize * numStars + gapSize * (numStars - 1), getMeasuredHeight());
+        }
+
         removeAllViews();
         if (items != null) {
             int length = items.length;
