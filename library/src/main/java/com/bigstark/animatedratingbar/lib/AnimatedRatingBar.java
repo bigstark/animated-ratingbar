@@ -7,6 +7,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 /**
@@ -25,6 +27,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
     private float rating;
     private int max;
     private int gapSize;
+    private int starSize = 0;
 
     private AnimatedRatingBarItem[] items;
     private boolean isNeedRedraw = true;
@@ -67,7 +70,8 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         numStars = ta.getInt(R.styleable.AnimatedRatingBar_numStars, 5);
         max = ta.getInt(R.styleable.AnimatedRatingBar_max, 5);
         rating = ta.getFloat(R.styleable.AnimatedRatingBar_rating, 2.5f);
-        gapSize = ta.getDimensionPixelOffset(R.styleable.AnimatedRatingBar_gapSize, 20);
+        gapSize = ta.getDimensionPixelSize(R.styleable.AnimatedRatingBar_gapSize, 20);
+        starSize = ta.getDimensionPixelSize(R.styleable.AnimatedRatingBar_starSize, 30);
 
         ta.recycle();
     }
@@ -84,11 +88,6 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
 
 
     private void resetItems() {
-        int itemSize = getMeasuredHeight() - getPaddingBottom() - getPaddingTop();
-        if (itemSize <= 0) {
-            return;
-        }
-
         removeAllViews();
         if (items != null) {
             int length = items.length;
@@ -99,7 +98,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         }
 
         items = new AnimatedRatingBarItem[numStars];
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(itemSize, itemSize);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(starSize, starSize);
 
         float progressStars = numStars * rating / max;
         int fillStars = (int) progressStars;
@@ -220,7 +219,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ObjectAnimator animator = ObjectAnimator.ofFloat(item, "alpha", 1f, 1f);
+                    ValueAnimator animator = ValueAnimator.ofInt(1, 1);
                     animator.setDuration(duration);
                     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
