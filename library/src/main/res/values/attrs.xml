@@ -8,5 +8,6 @@
         <attr name="rating" format="float" />
         <attr name="stepSize" format="float" />
         <attr name="gapSize" format="dimension" />
+        <attr name="starSize" format="dimension" />
     </declare-styleable>
 </resources>
