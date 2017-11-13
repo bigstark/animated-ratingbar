@@ -48,6 +48,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         setGravity(Gravity.CENTER_VERTICAL);
         setWillNotDraw(false);
         setAttrs(context, attrs);
+        resetItems();
     }
 
 
@@ -90,14 +91,6 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
 
 
     private void resetItems() {
-        if (getMeasuredHeight() == 0) {
-            setMeasuredDimension(getMeasuredWidth(), starSize);
-        }
-
-        if (getMeasuredWidth() == 0) {
-            setMeasuredDimension(starSize * numStars + gapSize * (numStars - 1), getMeasuredHeight());
-        }
-
         removeAllViews();
         if (items != null) {
             int length = items.length;
@@ -130,6 +123,22 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         }
 
         isNeedRedraw = false;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        if (heightMode == MeasureSpec.AT_MOST && widthMode == MeasureSpec.AT_MOST) {
+            int width = starSize * numStars + gapSize * (numStars - 1) + getPaddingLeft() + getPaddingRight();
+            int height = starSize + getPaddingTop() + getPaddingBottom();
+
+            setMeasuredDimension(width, height);
+            return;
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
