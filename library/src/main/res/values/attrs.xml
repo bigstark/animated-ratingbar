@@ -9,5 +9,6 @@
         <attr name="stepSize" format="float" />
         <attr name="gapSize" format="dimension" />
         <attr name="starSize" format="dimension" />
+        <attr name="seekable" format="boolean" />
     </declare-styleable>
 </resources>

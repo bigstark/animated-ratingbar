@@ -21,7 +21,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
 
     private OnRatingChangedListener listener;
     private int duration = 500;
-    private boolean seekable = true;
+    private boolean seekable = false;
 
     private Drawable progressImage;
     private Drawable secondaryProgressImage;
@@ -75,6 +75,7 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         rating = ta.getFloat(R.styleable.AnimatedRatingBar_rating, 2.5f);
         gapSize = ta.getDimensionPixelSize(R.styleable.AnimatedRatingBar_gapSize, 20);
         starSize = ta.getDimensionPixelSize(R.styleable.AnimatedRatingBar_starSize, 30);
+        seekable = ta.getBoolean(R.styleable.AnimatedRatingBar_seekable, false);
 
         ta.recycle();
     }
@@ -134,7 +135,6 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
         }
         float rating = event.getX() / getWidth() * 5;
         rating = Math.round(rating * 100) / 100f;
-        Log.v("TAG", "rating : " + rating);
         setRating(rating);
         return true;
     }
