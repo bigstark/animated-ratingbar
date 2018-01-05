@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -30,7 +31,6 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
     private int gapSize;
     private int starSize = 0;
 
-    private AnimatedRatingBarItem[] items;
     private boolean isNeedRedraw = true;
 
 
@@ -91,38 +91,52 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
 
 
     private void resetItems() {
-        removeAllViews();
-        if (items != null) {
-            int length = items.length;
-            for (int i = 0; i < length; i++) {
-                items[i] = null;
+        if (getChildCount() == 0) {
+            for (int i = 0; i < numStars; i++) {
+                AnimatedRatingBarItem item = new AnimatedRatingBarItem(getContext());
+                LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(starSize, starSize);
+                itemParams.leftMargin = i == 0 ? 0 : gapSize;
+                item.setLayoutParams(itemParams);
+                addView(item);
             }
-            items = null;
         }
-
-        items = new AnimatedRatingBarItem[numStars];
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(starSize, starSize);
 
         float progressStars = numStars * rating / max;
         int fillStars = (int) progressStars;
         float levelStar = progressStars - fillStars;
 
-
         for (int i = 0; i < numStars; i++) {
-            itemParams.leftMargin = i == 0 ? 0 : gapSize;
+            AnimatedRatingBarItem item = (AnimatedRatingBarItem) getChildAt(i);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) item.getLayoutParams();
+            params.leftMargin = i == 0 ? 0 : gapSize;
+            item.setLayoutParams(params);
 
-            AnimatedRatingBarItem item = new AnimatedRatingBarItem(getContext());
-            item.setLayoutParams(itemParams);
             float level = i < fillStars ? 1 : i == fillStars ? levelStar : 0;
             item.setProgressLevel(level);
             item.setProgressImageDrawable(progressImage);
             item.setSecondaryProgressImageDrawable(secondaryProgressImage);
-
-            items[i] = item;
-            addView(items[i]);
         }
 
         isNeedRedraw = false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!seekable) {
+            return false;
+        }
+        if (event.getX() < 0) {
+            setRating(0);
+            return true;
+        } else if (event.getX() > getWidth()) {
+            setRating(max);
+            return true;
+        }
+        float rating = event.getX() / getWidth() * 5;
+        rating = Math.round(rating * 100) / 100f;
+        Log.v("TAG", "rating : " + rating);
+        setRating(rating);
+        return true;
     }
 
     @Override
@@ -234,7 +248,8 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
     @Override
     public void startAnimate() {
         int delay = 0;
-        for (final AnimatedRatingBarItem item : items) {
+        for (int i = 0; i < numStars; i++) {
+            final int position = i;
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -244,14 +259,14 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
                             float fraction = animation.getAnimatedFraction();
-                            item.setRotationY((fraction * 3 * 360) % 360);
+                            getChildAt(position).setRotationY((fraction * 3 * 360) % 360);
                         }
                     });
                     animator.start();
                 }
             }, delay);
 
-            delay += duration / items.length;
+            delay += duration / numStars;
         }
     }
 
