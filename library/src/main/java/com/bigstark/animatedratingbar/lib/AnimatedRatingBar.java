@@ -210,6 +210,11 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
             rating = max;
         }
 
+        if (listener != null) {
+            listener.onRatingChanged(this, rating);
+        }
+
+
         this.rating = rating;
         isNeedRedraw = true;
         postInvalidate();
@@ -242,6 +247,11 @@ public class AnimatedRatingBar extends LinearLayout implements IAnimatedRatingBa
     @Override
     public void setAnimateDuration(int duration) {
         this.duration = duration;
+    }
+
+
+    public float getRating() {
+        return rating;
     }
 
 
